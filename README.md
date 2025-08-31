@@ -27,8 +27,8 @@
 ### Manual Installation
 1. Using a tool of choice open the directory (folder) for HA configuration (where you find configuration YAML file).
 2. If `custom_components` directory does not exist, create one.
-3. In the `custom_components` directory create a new folder called `hslhrt`.
-4. Download all the files from this repository and place the files in this directory.
+3. Download this repository and extract it
+4. Copy the `hslhrt` folder from this repository to your `custom_components` directory
 5. If the files are placed correctly, it should have the hierarchy as: <HA configuration directory>/custom_components/hslhrt
 6. Restart Home Assistant
 7. Install integration from UI (Configuration → Integrations → + → Search for "hsl")

@@ -24,7 +24,7 @@ Real-time public transport information for Helsinki Metropolitan Area using the 
 
 ### Manual Installation
 1. Download all files from this repository
-2. Place them in `<config_dir>/custom_components/hslhrt/`
+2. Place the `hslhrt` folder in `<config_dir>/custom_components/`
 3. Restart Home Assistant
 4. Configure via the UI
 
