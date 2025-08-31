@@ -1,20 +1,44 @@
 # hslhrt-hass-custom
-`hslhrt-hass-custom` is a Home Assistant custom component for real time public transsport information in Helsinki Metropoliton Area. Data is provided via [Digitransit platform](https://digitransit.fi/en/) APIs.
+
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+
+`hslhrt-hass-custom` is a Home Assistant custom component for real time public transport information in Helsinki Metropolitan Area. Data is provided via [Digitransit platform](https://digitransit.fi/en/) APIs.
+
+## Requirements
+
+- Home Assistant 2023.8.0 or later
+- Python GraphQL Client library
+- Valid Digitransit API key ([Get one here](https://digitransit.fi/en/developers/apis/4-realtime-api/vehicle-positions/))
 
 ## Installation
 
-    1. Using a tool of choice open the directory (folder) for HA configuration (where you find configuration YAML file).
-    2. If `custom_components` directory does not exist, create one.
-    3. In the `custom_components` directory create a new folder called `hslhrt`.
-    4. Download all the files from the this repository and place the files in this directory.
-    5. If the files are placed correctly, it should have the hierarchy as: <HA configuration directory>/custom_components/hslhrt
-    6. Restart Home Assistant
-    7. Install integration from UI (Configuration --> Intergations --> + --> Search for "hsl")
-    8. Specify stop name (e.g. töölöntori) or stop code (e.g. H0209). Optionally the route number (e.g. 8) or the destination can be specified as well.
-       1. Stop name is case in-sensitive, but stop code is not. E.g. töölöntori and Töölöntori are OK. H0209 is OK. h0209 is NOT OK.
-       2. Route takes precedence over destination, if specified. Both options are case in-sensitive.
-       3. In case, route and destination are not needed, leave the default values as "ALL" or "all".
-       4. Add the API-key generated from the Digitransit site.
+### HACS (Recommended)
+1. Install HACS if you haven't already ([HACS Installation Guide](https://hacs.xyz/docs/installation/installation/))
+2. Add this repository to HACS:
+   - Go to HACS → Integrations → + → Custom repositories
+   - Add repository: `anand-p-r/hslhrt-hass-custom`
+   - Category: Integration
+3. Search for "Helsinki Regional Transport" in the HACS store
+4. Click "Download"
+5. Restart Home Assistant
+6. Go to Configuration → Integrations → + → Search for "HSL"
+7. Configure with your stop information and API key
+
+### Manual Installation
+1. Using a tool of choice open the directory (folder) for HA configuration (where you find configuration YAML file).
+2. If `custom_components` directory does not exist, create one.
+3. In the `custom_components` directory create a new folder called `hslhrt`.
+4. Download all the files from this repository and place the files in this directory.
+5. If the files are placed correctly, it should have the hierarchy as: <HA configuration directory>/custom_components/hslhrt
+6. Restart Home Assistant
+7. Install integration from UI (Configuration → Integrations → + → Search for "hsl")
+
+### Configuration
+Specify stop name (e.g. töölöntori) or stop code (e.g. H0209). Optionally the route number (e.g. 8) or the destination can be specified as well.
+1. Stop name is case in-sensitive, but stop code is not. E.g. töölöntori and Töölöntori are OK. H0209 is OK. h0209 is NOT OK.
+2. Route takes precedence over destination, if specified. Both options are case in-sensitive.
+3. In case, route and destination are not needed, leave the default values as "ALL" or "all".
+4. Add the API-key generated from the Digitransit site.
 
 <br/>
 
@@ -440,6 +464,15 @@ title: V1530 Next Lines
 <br/>
 
 **Note**: Sometimes the API query returns wierd results such as blank destinations or route numbers. If you see something like this, leave a comment and I can take a look at pruning the results further.
+
+## Getting an API Key
+
+To use this integration, you need a Digitransit API key:
+
+1. Go to [Digitransit Developer Portal](https://digitransit.fi/en/developers/apis/4-realtime-api/vehicle-positions/)
+2. Sign up for an account
+3. Request an API key
+4. Use the API key in the integration configuration
 
 ## Original Author
 Anand Radhakrishnan [@anand-p-r](https://github.com/anand-p-r)

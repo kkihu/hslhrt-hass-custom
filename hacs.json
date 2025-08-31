@@ -1,6 +1,10 @@
 {
   "name": "Helsinki Regional Transport",
+  "render_readme": true,
+  "domains": ["sensor"],
+  "homeassistant": "2023.8.0",
+  "iot_class": "Cloud Polling",
   "country": "FI",
-  "domains": ["hslhrt"],
-  "homeassistant": "0.118.1"
+  "zip_release": false,
+  "filename": "hslhrt.zip"
 }
