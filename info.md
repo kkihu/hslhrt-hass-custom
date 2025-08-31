@@ -43,8 +43,8 @@ Real-time public transport information for Helsinki Metropolitan Area using the 
 
 ## Support
 
-- [GitHub Issues](https://github.com/anand-p-r/hslhrt-hass-custom/issues)
-- [Documentation](https://github.com/anand-p-r/hslhrt-hass-custom)
+- [GitHub Issues](https://github.com/kkihu/hslhrt-hass-custom/issues)
+- [Documentation](https://github.com/kkihu/hslhrt-hass-custom)
 
 ## Credits
 

@@ -16,7 +16,7 @@
 1. Install HACS if you haven't already ([HACS Installation Guide](https://hacs.xyz/docs/installation/installation/))
 2. Add this repository to HACS:
    - Go to HACS → Integrations → + → Custom repositories
-   - Add repository: `anand-p-r/hslhrt-hass-custom`
+   - Add repository: `kkihu/hslhrt-hass-custom`
    - Category: Integration
 3. Search for "Helsinki Regional Transport" in the HACS store
 4. Click "Download"

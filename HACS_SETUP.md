@@ -52,7 +52,7 @@ hslhrt-hass-custom/
 ### For Users:
 1. Install HACS in your Home Assistant instance
 2. Go to HACS → Integrations → + → Custom repositories
-3. Add: `anand-p-r/hslhrt-hass-custom`
+3. Add: `kkihu/hslhrt-hass-custom`
 4. Category: Integration
 5. Search for "Helsinki Regional Transport"
 6. Click Download
