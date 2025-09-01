@@ -74,6 +74,8 @@ async def validate_user_config(hass: core.HomeAssistant, data):
         valid_opt_count = 1
         while True:
             graph_client.headers["digitransit-subscription-key"] = apikey
+            graph_client.headers["Ocp-Apim-Subscription-Key"] = apikey
+            graph_client.headers["Accept"] = "application/json"
             try:
                 hsl_data = await graph_client.execute_async(
                     query=STOP_ID_QUERY, variables=variables
