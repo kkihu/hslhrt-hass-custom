@@ -256,7 +256,9 @@ class HSLHRTDataUpdateCoordinator(DataUpdateCoordinator):
                 if not self.apikey:
                     raise UpdateFailed("Digitransit API key missing. Add your API key in the integration options.")
 
+                # Some Digitransit gateways accept either header name
                 graph_client.headers["digitransit-subscription-key"] = self.apikey
+                graph_client.headers["Ocp-Apim-Subscription-Key"] = self.apikey
                 graph_client.headers["Accept"] = "application/json"
 
                 # Asynchronous request
