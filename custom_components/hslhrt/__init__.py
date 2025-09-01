@@ -2,6 +2,7 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from aiohttp import ContentTypeError, ClientError
 
 from async_timeout import timeout
 import datetime
@@ -252,11 +253,15 @@ class HSLHRTDataUpdateCoordinator(DataUpdateCoordinator):
                     VAR_LIMIT: LIMIT,
                 }
 
+                if not self.apikey:
+                    raise UpdateFailed("Digitransit API key missing. Add your API key in the integration options.")
+
                 graph_client.headers["digitransit-subscription-key"] = self.apikey
+                graph_client.headers["Accept"] = "application/json"
 
                 # Asynchronous request
-                data = await self._hass.async_add_executor_job(
-                    graph_client.execute, ROUTE_QUERY_WITH_LIMIT, variables
+                data = await graph_client.execute_async(
+                    query=ROUTE_QUERY_WITH_LIMIT, variables=variables
                 )
 
                 self.route_data = parse_data(
@@ -264,6 +269,13 @@ class HSLHRTDataUpdateCoordinator(DataUpdateCoordinator):
                 )
                 _LOGGER.debug(f"DATA: {self.route_data}")
 
+        except ContentTypeError as cte:
+            # Digitransit returned a non-JSON body (often 401/403 or HTML) -> likely bad/missing API key
+            raise UpdateFailed(
+                "Digitransit returned non-JSON response. Verify your API key (401/403 likely)."
+            ) from cte
+        except ClientError as ce:
+            raise UpdateFailed(f"Network error talking to Digitransit: {str(ce)}") from ce
         except Exception as error:
-            raise UpdateFailed(error) from error
+            raise UpdateFailed(str(error)) from error
             return {}

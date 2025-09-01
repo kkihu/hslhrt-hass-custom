@@ -1,6 +1,7 @@
-"""Config flow for FMI (Finnish Meteorological Institute) integration."""
+"""Config flow for HSL HRT integration."""
 
 import voluptuous as vol
+from aiohttp import ContentTypeError, ClientError
 
 from homeassistant import config_entries, core
 from homeassistant.core import callback
@@ -45,6 +46,19 @@ async def validate_user_config(hass: core.HomeAssistant, data):
     ret_dest = None
     stops_data = {}
 
+    # Quick validation for API key
+    if not apikey or str(apikey).strip() == "":
+        _LOGGER.error("Digitransit API key is missing in config flow")
+        return {
+            STOP_CODE: None,
+            STOP_NAME: None,
+            STOP_GTFS: None,
+            ROUTE: None,
+            DESTINATION: None,
+            ERROR: "missing_apikey",
+            APIKEY: apikey,
+        }
+
     # Check if there is a valid stop for the given name/code
     try:
         # If name is given, it is case in-sensitive. If stop code is given
@@ -60,9 +74,36 @@ async def validate_user_config(hass: core.HomeAssistant, data):
         valid_opt_count = 1
         while True:
             graph_client.headers["digitransit-subscription-key"] = apikey
-            hsl_data = await graph_client.execute_async(
-                query=STOP_ID_QUERY, variables=variables
-            )
+            try:
+                hsl_data = await graph_client.execute_async(
+                    query=STOP_ID_QUERY, variables=variables
+                )
+            except ContentTypeError:
+                _LOGGER.error(
+                    "Digitransit returned non-JSON response during validation. Check API key."
+                )
+                errors = "invalid_apikey"
+                return {
+                    STOP_CODE: None,
+                    STOP_NAME: None,
+                    STOP_GTFS: None,
+                    ROUTE: None,
+                    DESTINATION: None,
+                    ERROR: errors,
+                    APIKEY: apikey,
+                }
+            except ClientError as ce:
+                _LOGGER.error(f"Network error during validation: {str(ce)}")
+                errors = "client_connect_error"
+                return {
+                    STOP_CODE: None,
+                    STOP_NAME: None,
+                    STOP_GTFS: None,
+                    ROUTE: None,
+                    DESTINATION: None,
+                    ERROR: errors,
+                    APIKEY: apikey,
+                }
 
             data_dict = hsl_data.get("data", None)
             if data_dict is not None:
@@ -109,7 +150,7 @@ async def validate_user_config(hass: core.HomeAssistant, data):
                 valid_opt_count = 3
 
     except Exception as err:
-        err_string = f"Client error with message {err.message}"
+        err_string = f"Client error with message {str(err)}"
         errors = "client_connect_error"
         _LOGGER.error(err_string)
 
